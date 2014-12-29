@@ -10,7 +10,7 @@
 class http_server {
     enum position {HEAD, BODY};
 
-    tcp_socket_factory tcpserv;
+    tcp_server tcpserv;
     public:
     class http_request {
         std::function<void(const char*, int)> cb = [this](const char* a, int n) {
@@ -45,7 +45,7 @@ class http_server {
         std::function<void(const char*, int)> head_callb;
         std::function<void(const char*, int)> body_callb;
         http_server & outer; // can't access the outer class without it
-        tcp_socket_factory::tcp_socket socket;
+        tcp_server::tcp_socket socket;
         public:
         http_request(http_server & outer);
         http_request(http_server & outer,
