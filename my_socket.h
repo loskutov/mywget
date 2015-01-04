@@ -11,7 +11,6 @@
 #include <iostream> // for debug out only
 
 static const int MAX_EVENTS = 10;
-static const int TIMEOUT = 10;
 
 struct tcp_server {
     int epollfd;
@@ -24,10 +23,11 @@ struct tcp_server {
         int sockfd;
         tcp_server & outer;
         epoll_event ev;
-        tcp_socket(tcp_server& outer);
 
+        tcp_socket(tcp_server& outer);
         tcp_socket(tcp_server&, std::string, uint16_t,
                    std::function<void(const char*, int)>);
+        ~tcp_socket();
     };
 };
 

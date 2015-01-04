@@ -63,6 +63,7 @@ class downloadable {
                         if(ishtml)
                             data += a[i];
                         file << a[i];
+                        //std::cout << a[i];
                     }
                 } else {
                     throw location;
@@ -75,10 +76,12 @@ class downloadable {
     }
     downloadable(http_server & serv, const std::string & url, const std::string & header = "") :
         file(nametosave(url)),
+        //file("ya.ru/azaza"),
         serv(serv),
         req(request(url, header)),
         name(nametosave(url)),
-        url(url) {}
+        url(url) {
+            std::cerr << "save file to " << nametosave(url) << std::endl;}
     //downloadable(downloadable && rhs) : serv(rhs.serv), req(rhs.req), file(rhs.file){}
     virtual ~downloadable() {
         file.close();

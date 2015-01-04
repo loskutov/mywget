@@ -18,5 +18,6 @@ http_server::http_request::http_request(http_server & outer,
 }
 
 void http_server::run() {
+    std::cerr << "starting tcpserv";
     tcpserv.start();
 }

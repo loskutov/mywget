@@ -166,7 +166,7 @@ int main(int argc, char* args[]) {
         else if (strncmp(args[i], "--level=", 8) == 0)
             level = atoi(args[i] + 8);
         else {
-            cerr << "Invalid option: " << args[i] << '\n';
+            cout << "Invalid option: " << args[i] << '\n';
             return 2;
         }
     }
@@ -176,7 +176,7 @@ int main(int argc, char* args[]) {
     recget(1, urls);
 
     for(auto i : dloaded) {
-        cout << i << endl;
+        cout << "downloaded: " << i << endl;
     }
 
     return 0;
