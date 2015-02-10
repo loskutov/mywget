@@ -8,26 +8,62 @@
 #include <string>
 #include <unordered_map>
 #include <functional>
-#include <iostream> // for debug out only
+
+inline void debug_out(const char* a)
+{
+#ifdef DEBUG
+    printf("\033[0;31m%s\033[0m", a);
+#endif
+}
 
 static const int MAX_EVENTS = 10;
 
-struct tcp_server {
+struct tcp_server
+{
+public:
+    /**
+     * @brief Default constructor
+     */
+    tcp_server();
+
+    /**
+     * @brief Start the corresponding epoll
+     */
+    void start();
+
+    struct tcp_socket
+    {
+    public:
+
+        /**
+         * @brief Send a request
+         * @param request Request body
+         */
+        void send_request(const std::string& request);
+
+        /**
+         * @brief Almost default constructor
+         * @param outer The corresponding TCP server
+         */
+        tcp_socket(tcp_server& outer);
+
+        /**
+         * @brief Another constructor
+         * @param outer The corresponding TCP server
+         * @param url The URL
+         * @param port The TCP port
+         * @param cb The callback to call on the response
+         */
+        tcp_socket(tcp_server& outer, std::string url, uint16_t port,
+                   std::function<void(const char*, int)> cb);
+        ~tcp_socket();
+    private:
+        int sockfd;
+        const tcp_server & outer; // can't access the outer class without it
+    };
+private:
     int epollfd;
     epoll_event events[MAX_EVENTS];
     std::unordered_map<int, std::function<void(const char*, int)>> callbacks;
-    tcp_server();
-    void start();
-    struct tcp_socket {
-        void send_request(const std::string&);
-        int sockfd;
-        tcp_server & outer;
-        epoll_event ev;
-
-        tcp_socket(tcp_server& outer);
-        tcp_socket(tcp_server&, std::string, uint16_t,
-                   std::function<void(const char*, int)>);
-        ~tcp_socket();
-    };
 };
 
